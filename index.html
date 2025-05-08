@@ -278,10 +278,487 @@
   // (Untuk ringkas, saya tidak mengulangi seluruh bank soal di sini, asumsikan sama)
 
   const questionBank = {
-    general: { easy: [...], medium: [...], hard: [...] },
-    science: { easy: [...], medium: [...], hard: [...] },
-    civics: { easy: [...], medium: [...], hard: [...] }
+    general: {
+      easy: [
+        {
+          question: "Ibu kota Indonesia adalah ...?",
+          options: ["Jakarta", "Bandung", "Surabaya", "Medan"],
+          answer: 0
+        },
+        {
+          question: "Lambang negara Indonesia adalah ...?",
+          options: ["Garuda Pancasila", "Burung Elang", "Macan", "Harimau"],
+          answer: 0
+        },
+        {
+          question: "Bendera Indonesia berwarna ...?",
+          options: ["Merah Putih", "Hijau Kuning", "Biru Putih", "Hitam Putih"],
+          answer: 0
+        },
+        {
+          question: "Hewan apa yang paling cepat di dunia?",
+          options: ["Cheetah", "Elang", "Kuda", "Singapura"],
+          answer: 0
+        },
+        {
+          question: "Apa mata uang Indonesia?",
+          options: ["Rupiah", "Dollar", "Yen", "Euro"],
+          answer: 0
+        },
+        {
+          question: "Gunung tertinggi di Indonesia adalah ...?",
+          options: ["Puncak Jaya", "Semeru", "Rinjani", "Slamet"],
+          answer: 0
+        },
+        {
+          question: "Pulau terbesar di Indonesia adalah ...?",
+          options: ["Kalimantan", "Jawa", "Sumatra", "Sulawesi"],
+          answer: 0
+        },
+        {
+          question: "Lagu kebangsaan Indonesia adalah ...?",
+          options: ["Indonesia Raya", "Tanah Airku", "Rayuan Pulau Kelapa", "Sepanjang Jalan Kenangan"],
+          answer: 0
+        },
+        {
+          question: "Apa bahasa resmi Indonesia?",
+          options: ["Bahasa Indonesia", "Bahasa Jawa", "Bahasa Sunda", "Bahasa Inggris"],
+          answer: 0
+        },
+        {
+          question: "Hari kemerdekaan Indonesia jatuh tanggal ...?",
+          options: ["17 Agustus", "1 Januari", "25 Desember", "5 Mei"],
+          answer: 0
+        },
+        {
+          question: "Ibukota Provinsi Jawa Barat adalah ...?",
+          options: ["Bandung", "Bekasi", "Bogor", "Depok"],
+          answer: 0
+        }
+      ],
+      medium: [
+        {
+          question: "Siapa Presiden Indonesia yang pertama?",
+          options: ["Soekarno", "Soeharto", "Habibie", "Jokowi"],
+          answer: 0
+        },
+        {
+          question: "Indonesia terdiri dari berapa provinsi?",
+          options: ["34", "36", "30", "32"],
+          answer: 0
+        },
+        {
+          question: "Apa lambang sila ke-3 Pancasila?",
+          options: ["Pohon Beringin", "Bintang", "Rantai", "Kepala Banteng"],
+          answer: 3
+        },
+        {
+          question: "Apa nama pulau terluar di Indonesia?",
+          options: ["Pulau Rote", "Pulau Weh", "Pulau Sebatik", "Pulau Bali"],
+          answer: 2
+        },
+        {
+          question: "Apa bahasa daerah terbesar di Indonesia?",
+          options: ["Jawa", "Sunda", "Batak", "Bugis"],
+          answer: 0
+        },
+        {
+          question: "Siapa tokoh proklamator kemerdekaan Indonesia?",
+          options: ["Soekarno & Hatta", "Soeharto & Habibie", "Jokowi & Megawati", "Sukarno & Habibie"],
+          answer: 0
+        },
+        {
+          question: "Apa nama pegunungan di Bali?",
+          options: ["Gunung Agung", "Gunung Merbabu", "Gunung Rinjani", "Gunung Semeru"],
+          answer: 0
+        },
+        {
+          question: "Siapa penulis lagu 'Indonesia Raya'?",
+          options: ["WR Supratman", "Ismail Marzuki", "Harry Roesli", "Gesang"],
+          answer: 0
+        },
+        {
+          question: "Kapan peristiwa G30S terjadi?",
+          options: ["1965", "1945", "1998", "2000"],
+          answer: 0
+        },
+        {
+          question: "Apa warna bendera negara Jepang?",
+          options: ["Putih dengan lingkaran merah", "Merah putih horizontal", "Merah hijau", "Biru putih merah"],
+          answer: 0
+        }
+      ],
+      hard: [
+        {
+          question: "Siapa Perdana Menteri Indonesia saat pertama kali berdiri?",
+          options: ["Sutan Sjahrir", "Soekarno", "Mohammad Hatta", "Soeharto"],
+          answer: 0
+        },
+        {
+          question: "Apa isi sila pertama Pancasila?",
+          options: ["Ketuhanan Yang Maha Esa", "Kemanusiaan yang adil dan beradab", "Persatuan Indonesia", "Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/ perwakilan"],
+          answer: 0
+        },
+        {
+          question: "Di tahun berapa Indonesia merdeka?",
+          options: ["1945", "1949", "1950", "1938"],
+          answer: 0
+        },
+        {
+          question: "Siapa Menteri Pertahanan pertama Indonesia?",
+          options: ["Sudirman", "Ahmad Yani", "Sutan Sjahrir", "Soekarno"],
+          answer: 0
+        },
+        {
+          question: "Apa nama ibu kota kerajaan Majapahit?",
+          options: ["Trowulan", "Singasari", "Kediri", "Demak"],
+          answer: 0
+        },
+        {
+          question: "Apa nama undang-undang dasar RI yang pertama?",
+          options: ["UUD 1945", "UUD 1950", "UUD 1949", "Pokok-pokok Agraria"],
+          answer: 0
+        },
+        {
+          question: "Apa nama pulau yang disebut The Emerald of the Equator?",
+          options: ["Borneo (Kalimantan)", "Sumatra", "Jawa", "Sulawesi"],
+          answer: 0
+        },
+        {
+          question: "Siapa penemu vaksin polio?",
+          options: ["Jonas Salk", "Louis Pasteur", "Edward Jenner", "Alexander Fleming"],
+          answer: 0
+        },
+        {
+          question: "Siapa tokoh Sumpah Pemuda pada tahun 1928?",
+          options: ["Soegondo Djojopoespito", "Ir. Soekarno", "Mohammad Hatta", "Ki Hadjar Dewantara"],
+          answer: 0
+        },
+        {
+          question: "Dalam ilmu ekonomi, apa arti 'inflasi'?",
+          options: ["Kenaikan harga barang dan jasa secara umum", "Penurunan harga barang", "Stagnasi ekonomi", "Krisis moneter"],
+          answer: 0
+        }
+      ],
+    },
+    science: {
+      easy: [
+        {
+          question: "Air menjadi padat pada suhu ... °C?",
+          options: ["0", "100", "50", "25"],
+          answer: 0
+        },
+        {
+          question: "Planet terdekat dengan Matahari adalah ...?",
+          options: ["Merkurius", "Venus", "Bumi", "Mars"],
+          answer: 0
+        },
+        {
+          question: "Apa sumber energi utama di Bumi?",
+          options: ["Matahari", "Angin", "Air", "Batu bara"],
+          answer: 0
+        },
+        {
+          question: "Fotosintesis dilakukan oleh ...?",
+          options: ["Tumbuhan", "Binatang", "Jamur", "Bakteri"],
+          answer: 0
+        },
+        {
+          question: "Waktu yang dibutuhkan Bumi untuk satu kali berputar disebut ...?",
+          options: ["Satu hari", "Satu bulan", "Satu tahun", "Satu jam"],
+          answer: 0
+        },
+        {
+          question: "Gas yang kita hirup adalah ...?",
+          options: ["Oksigen", "Karbondioksida", "Nitrogen", "Hidrogen"],
+          answer: 0
+        },
+        {
+          question: "Sebutkan hewan yang dikenal cepat berlari?",
+          options: ["Cheetah", "Kura-kura", "Singa", "Gajah"],
+          answer: 0
+        },
+        {
+          question: "Matahari terbit dari arah ...?",
+          options: ["Timur", "Barat", "Utara", "Selatan"],
+          answer: 0
+        },
+        {
+          question: "Alat untuk melihat bintang disebut ...?",
+          options: ["Teleskop", "Mikroskop", "Kamera", "Teropong"],
+          answer: 0
+        },
+        {
+          question: "Organ utama pencernaan manusia adalah ...?",
+          options: ["Perut", "Jantung", "Paru-paru", "Ginjal"],
+          answer: 0
+        }
+      ],
+      medium: [
+        {
+          question: "Apa rumus kimia air?",
+          options: ["H2O", "CO2", "O2", "NaCl"],
+          answer: 0
+        },
+        {
+          question: "Siapa penemu teori gravitasi?",
+          options: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Marie Curie"],
+          answer: 0
+        },
+        {
+          question: "Zat yang mengalirkan listrik pada logam disebut ...?",
+          options: ["Elektron", "Proton", "Neutron", "Ion"],
+          answer: 0
+        },
+        {
+          question: "Apa organ tubuh yang memompa darah?",
+          options: ["Jantung", "Paru-paru", "Hati", "Lambung"],
+          answer: 0
+        },
+        {
+          question: "Kapan Bumi mengelilingi Matahari satu kali?",
+          options: ["Setahun", "Sebulan", "Sehari", "Satu jam"],
+          answer: 0
+        },
+        {
+          question: "Materi menjadi gas pada suhu ... °C?",
+          options: ["100", "0", "50", "25"],
+          answer: 0
+        },
+        {
+          question: "Apa nama unsur dalam tabel periodik dengan simbol 'Fe'?",
+          options: ["Besi", "Emas", "Perak", "Tembaga"],
+          answer: 0
+        },
+        {
+          question: "Jaringan yang menghubungkan otot ke tulang adalah ...?",
+          options: ["Tendon", "Ligamen", "Saraf", "Otot"],
+          answer: 0
+        },
+        {
+          question: "Siapa ilmuwan yang menemukan listrik statis?",
+          options: ["Benjamin Franklin", "Thomas Edison", "Nikola Tesla", "Michael Faraday"],
+          answer: 0
+        },
+        {
+          question: "Proses perubahan cair menjadi gas disebut ...?",
+          options: ["Penguapan", "Pengembunan", "Pembekuan", "Peleburan"],
+          answer: 0
+        }
+      ],
+      hard: [
+        {
+          question: "Apa rumus struktur benzena?",
+          options: ["C6H6", "CH4", "C2H5OH", "C2H2"],
+          answer: 0
+        },
+        {
+          question: "Siapa yang mengembangkan teori relativitas?",
+          options: ["Albert Einstein", "Isaac Newton", "Nikola Tesla", "Galileo Galilei"],
+          answer: 0
+        },
+        {
+          question: "Unit terkecil makhluk hidup adalah ...?",
+          options: ["Sel", "Molekul", "Atom", "Organ"],
+          answer: 0
+        },
+        {
+          question: "Apa nama partikel bermuatan negatif dalam atom?",
+          options: ["Elektron", "Proton", "Neutron", "Ion"],
+          answer: 0
+        },
+        {
+          question: "Apa nama hukum Newton kedua?",
+          options: ["F = m x a", "Hukum Aksi-Reaksi", "Inersia", "Gaya Gravitasi"],
+          answer: 0
+        },
+        {
+          question: "Apa fungsi mitokondria dalam sel?",
+          options: ["Tempat produksi energi", "Pusat arah sel", "Transportasi zat", "Sintesis protein"],
+          answer: 0
+        },
+        {
+          question: "Proses pembelahan sel menjadi dua disebut ...?",
+          options: ["Mitosis", "Meiosis", "Fusi", "Fisi"],
+          answer: 0
+        },
+        {
+          question: "Apa nama hormon yang mengatur gula darah?",
+          options: ["Insulin", "Adrenalin", "Tiroid", "Estrogen"],
+          answer: 0
+        },
+        {
+          question: "Planet dengan suhu terpanas di tata surya adalah ...?",
+          options: ["Venus", "Merkurius", "Mars", "Jupiter"],
+          answer: 0
+        },
+        {
+          question: "Proses perubahan gas menjadi cair disebut ...?",
+          options: ["Kondensasi", "Evaporasi", "Sublimasi", "Fusi"],
+          answer: 0
+        }
+      ]
+    },
+    civics : {
+      easy: [
+        {
+          question: "Siapa pemimpin negara Indonesia saat ini (2024)?",
+          options: ["Joko Widodo", "Soekarno", "Habibie", "Megawati"],
+          answer: 0
+        },
+        {
+          question: "Apa nama lambang negara Indonesia?",
+          options: ["Garuda Pancasila", "Elang Jawa", "Macan", "Banteng"],
+          answer: 0
+        },
+        {
+          question: "Lambang sila ke-4 Pancasila adalah ...?",
+          options: ["Kepala Banteng", "Pohon Beringin", "Rantai", "Bintang"],
+          answer: 0
+        },
+        {
+          question: "Lambang sila ke-5 Pancasila adalah ...?",
+          options: ["Padi dan Kapas", "Burung Garuda", "Bintang", "Rantai"],
+          answer: 0
+        },
+        {
+          question: "Apa tujuan utama Pancasila?",
+          options: ["Dasar negara Indonesia", "Bendera negara", "Lagu kebangsaan", "Nama presiden"],
+          answer: 0
+        },
+        {
+          question: "Tanggal berapa Indonesia merdeka?",
+          options: ["17 Agustus 1945", "1 Januari 1945", "25 Desember 1945", "5 Mei 1945"],
+          answer: 0
+        },
+        {
+          question: "Pemilihan presiden berlangsung setiap ...?",
+          options: ["5 tahun", "4 tahun", "6 tahun", "3 tahun"],
+          answer: 0
+        },
+        {
+          question: "Siapa yang membuat lagu Indonesia Raya?",
+          options: ["WR Supratman", "Ismail Marzuki", "Gesang", "Harry Roesli"],
+          answer: 0
+        },
+        {
+          question: "Apa nama sistem pemerintahan Indonesia?",
+          options: ["Republik", "Monarki", "Diktator", "Komunis"],
+          answer: 0
+        },
+        {
+          question: "Undang-undang dasar Indonesia disebut ...?",
+          options: ["UUD 1945", "UUD 1950", "UUD 1949", "UUD 1965"],
+          answer: 0
+        }
+      ],
+      medium: [
+        {
+          question: "Siapa yang menulis teks proklamasi kemerdekaan Indonesia?",
+          options: ["Soekarno & Hatta", "Mohammad Yamin", "Sutan Sjahrir", "Ki Hajar Dewantara"],
+          answer: 0
+        },
+        {
+          question: "Apa tugas DPR RI?",
+          options: ["Membuat undang-undang", "Mengadili", "Menetapkan pajak", "Memimpin tentara"],
+          answer: 0
+        },
+        {
+          question: "Sistem pemerintahan Indonesia adalah ...?",
+          options: ["Demokrasi Pancasila", "Monarki Konstitusional", "Komunis", "Diktator"],
+          answer: 0
+        },
+        {
+          question: "Berapa anggota DPR RI periode 2019-2024?",
+          options: ["575", "500", "600", "450"],
+          answer: 0
+        },
+        {
+          question: "Apa yang dimaksud dengan HAM?",
+          options: ["Hak Asasi Manusia", "Hak Akses Media", "Hukum Air Minum", "Hak Anggota Masyarakat"],
+          answer: 0
+        },
+        {
+          question: "Apa nama lembaga pemilihan umum di Indonesia?",
+          options: ["KPU", "Bawaslu", "MPR", "DPR"],
+          answer: 0
+        },
+        {
+          question: "Berapa lama masa jabatan presiden Indonesia?",
+          options: ["5 tahun", "4 tahun", "6 tahun", "3 tahun"],
+          answer: 0
+        },
+        {
+          question: "Apa isi sila kedua Pancasila?",
+          options: ["Kemanusiaan yang adil dan beradab", "Ketuhanan Yang Maha Esa", "Persatuan Indonesia", "Kerakyatan"],
+          answer: 0
+        },
+        {
+          question: "Apa arti lambang rantai di sila ke-4?",
+          options: ["Persatuan dan kesatuan", "Keadilan sosial", "Ketuhanan Yang Maha Esa", "Kemanusiaan"],
+          answer: 0
+        },
+        {
+          question: "Apa kewajiban warga negara Indonesia?",
+          options: ["Mematuhi hukum", "Menjadi tentara", "Menjadi presiden", "Mengatur pajak"],
+          answer: 0
+        }
+      ],
+      hard: [
+        {
+          question: "Apa arti Pancasila secara etimologis?",
+          options: ["Lima dasar", "Lima sila", "Lima pilar", "Lima aturan"],
+          answer: 0
+        },
+        {
+          question: "Siapa ketua MPR periode 2019-2024?",
+          options: ["Bambang Soesatyo", "Zulkifli Hasan", "Megawati", "Prabowo"],
+          answer: 0
+        },
+        {
+          question: "Sistem ketatanegaraan Indonesia berbentuk ...?",
+          options: ["Nirbaits", "Negara Kesatuan", "Federal", "Konfederasi"],
+          answer: 1
+        },
+        {
+          question: "Apa fungsi Mahkamah Konstitusi?",
+          options: ["Menguji undang-undang terhadap UUD", "Mengatur pajak", "Menentukan DPR", "Memutuskan presiden"],
+          answer: 0
+        },
+        {
+          question: "Apa unsur pokok UUD 1945?",
+          options: ["Pembukaan dan pasal-pasal", "Hanya pembukaan", "Hanya pasal-pasal", "Peraturan presiden"],
+          answer: 0
+        },
+        {
+          question: "Sistem pemilu legislatif Indonesia berbasis ...?",
+          options: ["Proporsional terbuka", "Distrik murni", "Sistem mayoritas", "Sistem blok"],
+          answer: 0
+        },
+        {
+          question: "Berapa jumlah anggota DPD RI?",
+          options: ["136", "100", "75", "120"],
+          answer: 0
+        },
+        {
+          question: "Undang-undang terendah di Indonesia adalah ...?",
+          options: ["Peraturan Desa", "Peraturan Pemerintah", "UU", "Keputusan Presiden"],
+          answer: 0
+        },
+        {
+          question: "Siapa yang berhak mengajukan uji materi ke MK?",
+          options: ["Warga Negara", "Presiden", "DPR", "Mahkamah Agung"],
+          answer: 0
+        },
+        {
+          question: "Apa makna lambang Garuda Pancasila?",
+          options: ["Simbol negara dan nilai dasar bangsa", "Simbol hewan nasional", "Lambang partai politik", "Logo pemerintahan"],
+          answer: 0
+        }
+      ]
+    }
   };
+
   const topicNames = { general: "Pengetahuan Umum", science: "SAINS", civics: "Kewarganegaraan Indonesia" };
   const difficultyNames = { easy: "Mudah", medium: "Sedang", hard: "Sulit" };
 
