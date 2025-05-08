@@ -236,7 +236,7 @@
     <!-- Pilih topik dan kesulitan -->
     <section id="setup" class="section active" aria-label="Setup quiz">
       <label for="player-name">Masukkan Nama (untuk leaderboard):</label>
-      <input type="text" id="player-name" maxlength="20" placeholder="Nama Anda" aria-required="true" />
+      <input type="text" id="player-name" maxlength="10" placeholder="Nama Anda" aria-required="true" />
       <label for="topic-select">Pilih Topik</label>
       <select id="topic-select" aria-required="true">
         <option value="" disabled selected>-- Pilih Topik --</option>
@@ -1041,9 +1041,9 @@
   lbDifficultyFilter.addEventListener('change', renderLeaderboard);
 
   // Accessibility focus handling
-  playerNameInput.addEventListener('input', () => {
-    if(!startBtn.disabled) startBtn.focus();
-  });
+//   playerNameInput.addEventListener('input', () => {
+//     if(!startBtn.disabled) startBtn.focus();
+//   });
 
   // Initialize leaderboard on load
   loadLeaderboard();
