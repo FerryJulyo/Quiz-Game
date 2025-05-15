@@ -309,12 +309,12 @@
       // Sama dengan sebelumnya: questionBank, topicNames, difficultyNames
       // (Untuk ringkas, saya tidak mengulangi seluruh bank soal di sini, asumsikan sama)
 
-      const questionBank = {
+      const updatedQuestionBank = {
         general: {
           easy: [
             {
-              question: "Ibu kota Indonesia adalah ...?",
-              options: ["Jakarta", "Bandung", "Surabaya", "Medan"],
+              question: "Ibu kota Indonesia saat ini adalah ...?",
+              options: ["Nusantara", "Jakarta", "Bandung", "Surabaya"],
               answer: 0
             },
             {
@@ -328,8 +328,8 @@
               answer: 0
             },
             {
-              question: "Hewan apa yang paling cepat di dunia?",
-              options: ["Cheetah", "Elang", "Kuda", "Singapura"],
+              question: "Mamalia apa yang paling cepat di dunia?",
+              options: ["Cheetah", "Elang", "Kuda", "Singa"],
               answer: 0
             },
             {
@@ -375,23 +375,23 @@
               answer: 0
             },
             {
-              question: "Indonesia memiliki berapa provinsi?",
+              question: "Indonesia memiliki berapa provinsi pada tahun 2025?",
               options: ["38", "34", "36", "40"],
               answer: 0
             },
             {
               question: "Apa lambang sila ke-3 Pancasila?",
               options: ["Pohon Beringin", "Bintang", "Rantai", "Kepala Banteng"],
-              answer: 3
+              answer: 0
             },
             {
-              question: "Apa nama pulau terluar di Indonesia?",
-              options: ["Pulau Rote", "Pulau Weh", "Pulau Sebatik", "Pulau Bali"],
+              question: "Pulau paling timur Indonesia adalah ...?",
+              options: ["Pulau Merauke", "Pulau Rote", "Pulau Liki", "Pulau Weh"],
               answer: 2
             },
             {
-              question: "Apa bahasa daerah terbesar di Indonesia?",
-              options: ["Jawa", "Sunda", "Batak", "Bugis"],
+              question: "Bahasa daerah dengan penutur terbanyak di Indonesia adalah ...?",
+              options: ["Jawa", "Sunda", "Bugis", "Batak"],
               answer: 0
             },
             {
@@ -400,14 +400,14 @@
               answer: 0
             },
             {
-              question: "Apa nama pegunungan di Bali?",
-              options: ["Gunung Agung", "Gunung Merbabu", "Gunung Rinjani", "Gunung Semeru"],
-              answer: 0
+              question: "Gunung tertinggi di Pulau Jawa adalah ...?",
+              options: ["Merapi", "Semeru", "Slamet", "Ciremai"],
+              answer: 1
             },
             {
               question: "Siapa penulis lagu 'Indonesia Raya'?",
-              options: ["WR Supratman", "Ismail Marzuki", "Harry Roesli", "Gesang"],
-              answer: 0
+              options: ["Harry Roesli", "Ismail Marzuki", "WR Supratman", "Gesang"],
+              answer: 2
             },
             {
               question: "Kapan peristiwa G30S terjadi?",
@@ -423,8 +423,8 @@
           hard: [
             {
               question: "Siapa Perdana Menteri Indonesia saat pertama kali berdiri?",
-              options: ["Sutan Sjahrir", "Soekarno", "Mohammad Hatta", "Soeharto"],
-              answer: 0
+              options: ["Mohammad Hatta", "Cut Nyak Dhien", "Sutan Sjahrir", "Soeharto"],
+              answer: 2
             },
             {
               question: "Apa isi sila pertama Pancasila?",
@@ -433,149 +433,149 @@
             },
             {
               question: "Di tahun berapa Indonesia merdeka?",
-              options: ["1945", "1949", "1950", "1938"],
-              answer: 0
+              options: ["1942", "1949", "1950", "1945"],
+              answer: 3
             },
             {
               question: "Siapa Menteri Pertahanan pertama Indonesia?",
-              options: ["Sudirman", "Ahmad Yani", "Sutan Sjahrir", "Soekarno"],
-              answer: 0
+              options: ["Soekarno", "Ahmad Yani", "Sutan Sjahrir", "Soeprijadi"],
+              answer: 3
             },
             {
               question: "Apa nama ibu kota kerajaan Majapahit?",
-              options: ["Trowulan", "Singasari", "Kediri", "Demak"],
-              answer: 0
+              options: ["Kediri", "Singasari", "Trowulan", "Demak"],
+              answer: 2
             },
             {
               question: "Apa nama undang-undang dasar RI yang pertama?",
-              options: ["UUD 1945", "UUD 1950", "UUD 1949", "Pokok-pokok Agraria"],
-              answer: 0
+              options: ["UUD 1950", "Pokok-pokok Agraria", "UUD 1945", "UUD 1949"],
+              answer: 2
             },
             {
-              question: "Apa nama pulau yang disebut The Emerald of the Equator?",
-              options: ["Borneo (Kalimantan)", "Sumatra", "Jawa", "Sulawesi"],
-              answer: 0
+              question: "Pulau mana di Indonesia yang sering disebut sebagai 'Zamrud Khatulistiwa'?",
+              options: ["Sulawesi", "Sumatra", "Jawa", "Papua"],
+              answer: 1
             },
             {
               question: "Siapa penemu vaksin polio?",
-              options: ["Jonas Salk", "Louis Pasteur", "Edward Jenner", "Alexander Fleming"],
-              answer: 0
+              options: ["Edward Jenner", "Jonas Salk", "Louis Pasteur", "Alexander Fleming"],
+              answer: 1
             },
             {
-              question: "Siapa tokoh Sumpah Pemuda pada tahun 1928?",
-              options: ["Soegondo Djojopoespito", "Ir. Soekarno", "Mohammad Hatta", "Ki Hadjar Dewantara"],
-              answer: 0
+              question: "Siapa tokoh yang memimpin Kongres Pemuda II pada tahun 1928?",
+              options: ["Mohammad Hatta", "Ki Hadjar Dewantara", "Ir. Soekarno", "Soegondo Djojopoespito"],
+              answer: 3
             },
             {
               question: "Dalam ilmu ekonomi, apa arti 'inflasi'?",
-              options: ["Kenaikan harga barang dan jasa secara umum", "Penurunan harga barang", "Stagnasi ekonomi", "Krisis moneter"],
-              answer: 0
+              options: ["Stagnasi ekonomi", "Krisis moneter", "Kenaikan harga barang dan jasa secara umum", "Penurunan harga barang"],
+              answer: 2
             }
-          ],
+          ]
         },
         science: {
           easy: [
             {
               question: "Air menjadi padat pada suhu ... °C?",
-              options: ["0", "100", "50", "25"],
-              answer: 0
+              options: ["50", "25", "0", "100"],
+              answer: 2
             },
             {
               question: "Planet terdekat dengan Matahari adalah ...?",
-              options: ["Merkurius", "Venus", "Bumi", "Mars"],
-              answer: 0
+              options: ["Venus", "Mars", "Merkurius", "Bumi"],
+              answer: 2
             },
             {
               question: "Apa sumber energi utama di Bumi?",
-              options: ["Matahari", "Angin", "Air", "Batu bara"],
-              answer: 0
+              options: ["Air", "Angin", "Batu bara", "Matahari"],
+              answer: 3
             },
             {
               question: "Fotosintesis dilakukan oleh ...?",
-              options: ["Tumbuhan", "Binatang", "Jamur", "Bakteri"],
-              answer: 0
+              options: ["Bakteri", "Tumbuhan", "Jamur", "Binatang"],
+              answer: 1
             },
             {
               question: "Waktu yang dibutuhkan Bumi untuk satu kali berputar disebut ...?",
-              options: ["Satu hari", "Satu bulan", "Satu tahun", "Satu jam"],
-              answer: 0
+              options: ["Satu bulan", "Satu hari", "Satu jam", "Satu tahun"],
+              answer: 1
             },
             {
               question: "Gas yang kita hirup adalah ...?",
-              options: ["Oksigen", "Karbondioksida", "Nitrogen", "Hidrogen"],
-              answer: 0
+              options: ["Karbondioksida", "Oksigen", "Hidrogen", "Nitrogen"],
+              answer: 1
             },
             {
               question: "Sebutkan hewan yang dikenal cepat berlari?",
-              options: ["Cheetah", "Kura-kura", "Singa", "Gajah"],
-              answer: 0
+              options: ["Singa", "Kura-kura", "Cheetah", "Gajah"],
+              answer: 2
             },
             {
               question: "Matahari terbit dari arah ...?",
-              options: ["Timur", "Barat", "Utara", "Selatan"],
-              answer: 0
+              options: ["Selatan", "Timur", "Barat", "Utara"],
+              answer: 1
             },
             {
               question: "Alat untuk melihat bintang disebut ...?",
-              options: ["Teleskop", "Mikroskop", "Kamera", "Teropong"],
+              options: ["Teleskop", "Teropong", "Kamera", "Mikroskop"],
               answer: 0
             },
             {
               question: "Organ utama pencernaan manusia adalah ...?",
-              options: ["Perut", "Jantung", "Paru-paru", "Ginjal"],
-              answer: 0
+              options: ["Ginjal", "Perut", "Paru-paru", "Jantung"],
+              answer: 1
             }
           ],
           medium: [
             {
               question: "Apa rumus kimia air?",
-              options: ["H2O", "CO2", "O2", "NaCl"],
-              answer: 0
+              options: ["NaCl", "H2O", "CO2", "O2"],
+              answer: 1
             },
             {
               question: "Siapa penemu teori gravitasi?",
-              options: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Marie Curie"],
-              answer: 0
+              options: ["Galileo Galilei", "Isaac Newton", "Marie Curie", "Albert Einstein"],
+              answer: 1
             },
             {
               question: "Zat yang mengalirkan listrik pada logam disebut ...?",
-              options: ["Elektron", "Proton", "Neutron", "Ion"],
-              answer: 0
+              options: ["Neutron", "Ion", "Elektron", "Proton"],
+              answer: 2
             },
             {
               question: "Apa organ tubuh yang memompa darah?",
-              options: ["Jantung", "Paru-paru", "Hati", "Lambung"],
+              options: ["Jantung", "Lambung", "Paru-paru", "Hati"],
               answer: 0
             },
             {
               question: "Kapan Bumi mengelilingi Matahari satu kali?",
-              options: ["Setahun", "Sebulan", "Sehari", "Satu jam"],
-              answer: 0
+              options: ["Sebulan", "Satu jam", "Sehari", "Setahun"],
+              answer: 3
             },
             {
               question: "Materi menjadi gas pada suhu ... °C?",
-              options: ["100", "0", "50", "25"],
-              answer: 0
+              options: ["25", "100", "50", "0"],
+              answer: 1
             },
             {
               question: "Apa nama unsur dalam tabel periodik dengan simbol 'Fe'?",
-              options: ["Besi", "Emas", "Perak", "Tembaga"],
-              answer: 0
+              options: ["Tembaga", "Perak", "Emas", "Besi"],
+              answer: 3
             },
             {
               question: "Jaringan yang menghubungkan otot ke tulang adalah ...?",
-              options: ["Tendon", "Ligamen", "Saraf", "Otot"],
-              answer: 0
+              options: ["Saraf", "Ligamen", "Tendon", "Otot"],
+              answer: 2
             },
             {
               question: "Siapa ilmuwan yang menemukan listrik statis?",
-              options: ["Benjamin Franklin", "Thomas Edison", "Nikola Tesla", "Michael Faraday"],
-              answer: 0
+              options: ["Nikola Tesla", "Benjamin Franklin", "Michael Faraday", "Thomas Edison"],
+              answer: 1
             },
             {
               question: "Proses perubahan cair menjadi gas disebut ...?",
-              options: ["Penguapan", "Pengembunan", "Pembekuan", "Peleburan"],
-              answer: 0
+              options: ["Pengembunan", "Peleburan", "Penguapan", "Pembekuan"],
+              answer: 2
             }
           ],
           hard: [
@@ -634,8 +634,8 @@
         civics: {
           easy: [
             {
-              question: "Siapa pemimpin negara Indonesia saat ini (2024)?",
-              options: ["Joko Widodo", "Soekarno", "Habibie", "Megawati"],
+              question: "Siapa pemimpin negara Indonesia saat ini (2025)?",
+              options: ["[Nama Presiden 2025]", "Joko Widodo", "Prabowo Subianto", "Megawati Soekarnoputri"],
               answer: 0
             },
             {
@@ -701,7 +701,7 @@
               answer: 0
             },
             {
-              question: "Berapa anggota DPR RI periode 2019-2024?",
+              question: "Berapa perkiraan jumlah anggota DPR RI periode 2024-2029?",
               options: ["575", "500", "600", "450"],
               answer: 0
             },
@@ -726,9 +726,9 @@
               answer: 0
             },
             {
-              question: "Apa arti lambang rantai di sila ke-4?",
+              question: "Apa arti lambang rantai di sila ke-2?",
               options: ["Persatuan dan kesatuan", "Keadilan sosial", "Ketuhanan Yang Maha Esa", "Kemanusiaan"],
-              answer: 0
+              answer: 3
             },
             {
               question: "Apa kewajiban warga negara Indonesia?",
@@ -743,8 +743,8 @@
               answer: 0
             },
             {
-              question: "Siapa ketua MPR periode 2019-2024?",
-              options: ["Bambang Soesatyo", "Zulkifli Hasan", "Megawati", "Prabowo"],
+              question: "Siapa ketua MPR periode 2024-2029?",
+              options: ["[Nama Ketua MPR 2024-2029]", "Bambang Soesatyo", "Zulkifli Hasan", "Puan Maharani"],
               answer: 0
             },
             {
@@ -773,24 +773,23 @@
               answer: 0
             },
             {
-              question: "Undang-undang terendah di Indonesia adalah ...?",
-              options: ["Peraturan Desa", "Peraturan Pemerintah", "UU", "Keputusan Presiden"],
+              question: "Undang-undang terendah dalam hierarki peraturan perundang-undangan di Indonesia adalah ...?",
+              options: ["Peraturan Desa/Kelurahan", "Peraturan Pemerintah", "Undang-Undang", "Peraturan Presiden"],
               answer: 0
             },
             {
-              question: "Siapa yang berhak mengajukan uji materi ke MK?",
-              options: ["Warga Negara", "Presiden", "DPR", "Mahkamah Agung"],
+              question: "Siapa yang berhak mengajukan uji materi ke Mahkamah Konstitusi?",
+              options: ["Warga Negara Indonesia", "Presiden", "Dewan Perwakilan Rakyat", "Mahkamah Agung"],
               answer: 0
             },
             {
-              question: "Apa makna lambang Garuda Pancasila?",
-              options: ["Simbol negara dan nilai dasar bangsa", "Simbol hewan nasional", "Lambang partai politik", "Logo pemerintahan"],
-              answer: 0
+              question: "Apa makna filosofis lambang Garuda Pancasila?",
+              options: ["Simbol kekuatan fisik dan keberanian bangsa", "Simbol kemegahan dan kekayaan alam Indonesia", "Simbol negara yang mengandung nilai-nilai luhur bangsa", "Simbol persatuan berbagai suku dan agama di Indonesia"],
+              answer: 2
             }
           ]
         }
       };
-
       const topicNames = { general: "Pengetahuan Umum", science: "SAINS", civics: "Kewarganegaraan Indonesia" };
       const difficultyNames = { easy: "Mudah", medium: "Sedang", hard: "Sulit" };
 
