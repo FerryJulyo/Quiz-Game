@@ -1,1058 +1,1091 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>Quiz Game Interaktif dengan Leaderboard</title>
-<style>
-  /* Reset and base */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg,#667eea,#764ba2);
-    color: #fff;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px 10px;
-  }
-  #app {
-    background: rgba(255,255,255,0.1);
-    max-width: 440px;
-    width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.3);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    min-height: 660px;
-  }
-  header {
-    text-align: center;
-    padding: 20px 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.3);
-  }
-  header h1 {
-    margin: 0;
-    font-weight: 700;
-    font-size: 1.8rem;
-    letter-spacing: 1px;
-  }
-  main {
-    flex: 1;
-    padding: 20px 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Quiz Game Interaktif dengan Leaderboard</title>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
 
-  .section {
-    display: none;
-  }
-  .section.active {
-    display: block;
-  }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px 10px;
+    }
 
-  label {
-    display: block;
-    margin: 12px 0 8px;
-    font-weight: 600;
-    font-size: 1rem;
-  }
-  select, input[type="text"] {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    font-family: inherit;
-    cursor: pointer;
-    background: rgba(255,255,255,0.25);
-    color: #fff;
-  }
-  input[type="text"] {
-    cursor: text;
-  }
-  button {
-    margin-top: 20px;
-    background: #6b5b95;
-    border: none;
-    color: white;
-    padding: 15px 15px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    border-radius: 50px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-  }
-  button:hover:not([disabled]) {
-    background-color: #836fa9;
-  }
-  button:disabled {
-    background-color: rgba(107,91,149,0.5);
-    cursor: default;
-    box-shadow: none;
-  }
+    #app {
+      background: rgba(255, 255, 255, 0.1);
+      max-width: 440px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 660px;
+    }
 
-  .leaderboard-section {
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 12px;
-    margin-bottom: 20px;
-    padding: 15px 15px 10px 15px;
-    max-height: 220px;
-    overflow-y: auto;
-    background-color: rgba(255,255,255,0.05);
-  }
-  .lb-filters {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .lb-filters select {
-    flex: 1;
-  }
-  table.leaderboard-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-  }
-  table.leaderboard-table th, table.leaderboard-table td {
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 6px 8px;
-    text-align: left;
-  }
-  table.leaderboard-table th {
-    background: rgba(255,255,255,0.15);
-    font-weight: 700;
-  }
-  table.leaderboard-table tr:nth-child(even) {
-    background: rgba(255,255,255,0.1);
-  }
+    header {
+      text-align: center;
+      padding: 20px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
 
-  .question-container {
-    margin-top: 10px;
-    font-size: 1.2rem;
-    min-height: 100px;
-    line-height: 1.4;
-    font-weight: 600;
-  }
-  .options {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .option {
-    background: rgba(255,255,255,0.2);
-    border-radius: 10px;
-    padding: 12px 18px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  .option:hover {
-    background: rgba(255,255,255,0.35);
-  }
-  .option.selected {
-    background: #ffb600;
-    color: #222;
-    font-weight: 700;
-  }
-  .option.correct {
-    background: #4caf50;
-    color: #fff;
-    font-weight: 700;
-    cursor: default;
-  }
-  .option.incorrect {
-    background: #f44336;
-    color: #fff;
-    font-weight: 700;
-    cursor: default;
-  }
-  .stats {
-    margin-top: 20px;
-    color: #eee;
-    font-weight: 600;
-    font-size: 1rem;
-  }
-  .footer {
-    padding: 15px 25px;
-    border-top: 1px solid rgba(255,255,255,0.25);
-    text-align: center;
-    font-size: 0.9rem;
-    color: #ddd;
-  }
-</style>
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 8px;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    select,
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.25);
+      color: #2a2639;
+    }
+
+    input[type="text"] {
+      cursor: text;
+    }
+
+    button {
+      margin-top: 20px;
+      background: #6b5b95;
+      border: none;
+      color: white;
+      padding: 15px 15px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    button:hover:not([disabled]) {
+      background-color: #836fa9;
+    }
+
+    button:disabled {
+      background-color: rgba(107, 91, 149, 0.5);
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .leaderboard-section {
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      padding: 15px 15px 10px 15px;
+      max-height: 220px;
+      overflow-y: auto;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .lb-filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .lb-filters select {
+      flex: 1;
+    }
+
+    table.leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    table.leaderboard-table th,
+    table.leaderboard-table td {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    table.leaderboard-table th {
+      background: rgba(255, 255, 255, 0.15);
+      font-weight: 700;
+    }
+
+    table.leaderboard-table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .question-container {
+      margin-top: 10px;
+      font-size: 1.2rem;
+      min-height: 100px;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+
+    .options {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .option {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .option:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .option.selected {
+      background: #ffb600;
+      color: #222;
+      font-weight: 700;
+    }
+
+    .option.correct {
+      background: #4caf50;
+      color: #fff;
+      font-weight: 700;
+      cursor: default;
+    }
+
+    .option.incorrect {
+      background: #f44336;
+      color: #fff;
+      font-weight: 700;
+      cursor: default;
+    }
+
+    .stats {
+      margin-top: 20px;
+      color: #eee;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .footer {
+      padding: 15px 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ddd;
+    }
+  </style>
 </head>
-<body>
-<div id="app" role="main" aria-live="polite">
-  <header>
-    <h1>Quiz Game Interaktif</h1>
-  </header>
-  <main>
 
-    <!-- Leaderboard -->
-    <section id="leaderboard-section" class="leaderboard-section" aria-label="Leaderboard Top 10">
-      <div class="lb-filters" aria-label="Filters leaderboard">
-        <select id="lb-topic-filter" aria-label="Filter topik leaderboard">
-          <option value="all" selected>Semua Topik</option>
+<body>
+  <div id="app" role="main" aria-live="polite">
+    <header>
+      <h1>Quiz Game Interaktif</h1>
+    </header>
+    <main>
+
+      <!-- Leaderboard -->
+      <section id="leaderboard-section" class="leaderboard-section" aria-label="Leaderboard Top 10">
+        <div class="lb-filters" aria-label="Filters leaderboard">
+          <select id="lb-topic-filter" aria-label="Filter topik leaderboard">
+            <option value="all" selected>Semua Topik</option>
+            <option value="general">Pengetahuan Umum</option>
+            <option value="science">SAINS</option>
+            <option value="civics">Kewarganegaraan Indonesia</option>
+          </select>
+          <select id="lb-difficulty-filter" aria-label="Filter tingkat kesulitan leaderboard">
+            <option value="all" selected>Semua Kesulitan</option>
+            <option value="easy">Mudah</option>
+            <option value="medium">Sedang</option>
+            <option value="hard">Sulit</option>
+          </select>
+        </div>
+        <table class="leaderboard-table" aria-live="polite">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama</th>
+              <th>Skor</th>
+              <th>Topik</th>
+              <th>Kesulitan</th>
+              <th>Tanggal</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-tbody">
+            <tr>
+              <td colspan="6" style="text-align:center; color:#ccc;">Tidak ada data leaderboard</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Pilih topik dan kesulitan -->
+      <section id="setup" class="section active" aria-label="Setup quiz">
+        <label for="player-name">Masukkan Nama (untuk leaderboard):</label>
+        <input type="text" id="player-name" maxlength="10" placeholder="Nama Anda" aria-required="true" />
+        <label for="topic-select">Pilih Topik</label>
+        <select id="topic-select" aria-required="true">
+          <option value="" disabled selected>-- Pilih Topik --</option>
           <option value="general">Pengetahuan Umum</option>
           <option value="science">SAINS</option>
           <option value="civics">Kewarganegaraan Indonesia</option>
         </select>
-        <select id="lb-difficulty-filter" aria-label="Filter tingkat kesulitan leaderboard">
-          <option value="all" selected>Semua Kesulitan</option>
+        <label for="difficulty-select">Pilih Tingkat Kesulitan</label>
+        <select id="difficulty-select" aria-required="true">
+          <option value="" disabled selected>-- Pilih Kesulitan --</option>
           <option value="easy">Mudah</option>
           <option value="medium">Sedang</option>
           <option value="hard">Sulit</option>
         </select>
-      </div>
-      <table class="leaderboard-table" aria-live="polite">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Nama</th>
-            <th>Skor</th>
-            <th>Topik</th>
-            <th>Kesulitan</th>
-            <th>Tanggal</th>
-          </tr>
-        </thead>
-        <tbody id="leaderboard-tbody">
-          <tr><td colspan="6" style="text-align:center; color:#ccc;">Tidak ada data leaderboard</td></tr>
-        </tbody>
-      </table>
-    </section>
+        <button id="start-btn" disabled>Mulai Quiz</button>
+      </section>
+      <!-- Quiz Question -->
+      <section id="quiz" class="section" aria-label="Quiz questions">
+        <div class="question-container" id="question-text" tabindex="0"></div>
+        <div class="options" id="options-list" role="list"></div>
+        <button id="next-btn" disabled>Soal Berikutnya</button>
+        <div class="stats" id="question-count" aria-live="polite"></div>
+      </section>
+      <!-- Result -->
+      <section id="result" class="section" aria-label="Hasil Quiz">
+        <h2>Hasil Quiz</h2>
+        <p id="score-text"></p>
+        <button id="restart-btn">Main Lagi</button>
+      </section>
+    </main>
+    <footer class="footer">
+      &copy; 2024 Quiz Game Interaktif
+    </footer>
+  </div>
 
-    <!-- Pilih topik dan kesulitan -->
-    <section id="setup" class="section active" aria-label="Setup quiz">
-      <label for="player-name">Masukkan Nama (untuk leaderboard):</label>
-      <input type="text" id="player-name" maxlength="10" placeholder="Nama Anda" aria-required="true" />
-      <label for="topic-select">Pilih Topik</label>
-      <select id="topic-select" aria-required="true">
-        <option value="" disabled selected>-- Pilih Topik --</option>
-        <option value="general">Pengetahuan Umum</option>
-        <option value="science">SAINS</option>
-        <option value="civics">Kewarganegaraan Indonesia</option>
-      </select>
-      <label for="difficulty-select">Pilih Tingkat Kesulitan</label>
-      <select id="difficulty-select" aria-required="true">
-        <option value="" disabled selected>-- Pilih Kesulitan --</option>
-        <option value="easy">Mudah</option>
-        <option value="medium">Sedang</option>
-        <option value="hard">Sulit</option>
-      </select>
-      <button id="start-btn" disabled>Mulai Quiz</button>
-    </section>
-    <!-- Quiz Question -->
-    <section id="quiz" class="section" aria-label="Quiz questions">
-      <div class="question-container" id="question-text" tabindex="0"></div>
-      <div class="options" id="options-list" role="list"></div>
-      <button id="next-btn" disabled>Soal Berikutnya</button>
-      <div class="stats" id="question-count" aria-live="polite"></div>
-    </section>
-    <!-- Result -->
-    <section id="result" class="section" aria-label="Hasil Quiz">
-      <h2>Hasil Quiz</h2>
-      <p id="score-text"></p>
-      <button id="restart-btn">Main Lagi</button>
-    </section>
-  </main>
-  <footer class="footer">
-    &copy; 2024 Quiz Game Interaktif
-  </footer>
-</div>
+  <script>
+    (() => {
+      // Sama dengan sebelumnya: questionBank, topicNames, difficultyNames
+      // (Untuk ringkas, saya tidak mengulangi seluruh bank soal di sini, asumsikan sama)
 
-<script>
-(() => {
-  // Sama dengan sebelumnya: questionBank, topicNames, difficultyNames
-  // (Untuk ringkas, saya tidak mengulangi seluruh bank soal di sini, asumsikan sama)
-
-  const questionBank = {
-    general: {
-      easy: [
-        {
-          question: "Ibu kota Indonesia adalah ...?",
-          options: ["Jakarta", "Bandung", "Surabaya", "Medan"],
-          answer: 0
+      const questionBank = {
+        general: {
+          easy: [
+            {
+              question: "Ibu kota Indonesia adalah ...?",
+              options: ["Jakarta", "Bandung", "Surabaya", "Medan"],
+              answer: 0
+            },
+            {
+              question: "Lambang negara Indonesia adalah ...?",
+              options: ["Garuda Pancasila", "Burung Elang", "Macan", "Harimau"],
+              answer: 0
+            },
+            {
+              question: "Bendera Indonesia berwarna ...?",
+              options: ["Merah Putih", "Hijau Kuning", "Biru Putih", "Hitam Putih"],
+              answer: 0
+            },
+            {
+              question: "Hewan apa yang paling cepat di dunia?",
+              options: ["Cheetah", "Elang", "Kuda", "Singapura"],
+              answer: 0
+            },
+            {
+              question: "Apa mata uang Indonesia?",
+              options: ["Rupiah", "Dollar", "Yen", "Euro"],
+              answer: 0
+            },
+            {
+              question: "Gunung tertinggi di Indonesia adalah ...?",
+              options: ["Puncak Jaya", "Semeru", "Rinjani", "Slamet"],
+              answer: 0
+            },
+            {
+              question: "Pulau terbesar di Indonesia adalah ...?",
+              options: ["Kalimantan", "Jawa", "Sumatra", "Sulawesi"],
+              answer: 0
+            },
+            {
+              question: "Lagu kebangsaan Indonesia adalah ...?",
+              options: ["Indonesia Raya", "Tanah Airku", "Rayuan Pulau Kelapa", "Sepanjang Jalan Kenangan"],
+              answer: 0
+            },
+            {
+              question: "Apa bahasa resmi Indonesia?",
+              options: ["Bahasa Indonesia", "Bahasa Jawa", "Bahasa Sunda", "Bahasa Inggris"],
+              answer: 0
+            },
+            {
+              question: "Hari kemerdekaan Indonesia jatuh tanggal ...?",
+              options: ["17 Agustus", "1 Januari", "25 Desember", "5 Mei"],
+              answer: 0
+            },
+            {
+              question: "Ibukota Provinsi Jawa Barat adalah ...?",
+              options: ["Bandung", "Bekasi", "Bogor", "Depok"],
+              answer: 0
+            }
+          ],
+          medium: [
+            {
+              question: "Siapa Presiden Indonesia yang pertama?",
+              options: ["Soekarno", "Soeharto", "Habibie", "Jokowi"],
+              answer: 0
+            },
+            {
+              question: "Indonesia memiliki berapa provinsi?",
+              options: ["38", "34", "36", "40"],
+              answer: 0
+            },
+            {
+              question: "Apa lambang sila ke-3 Pancasila?",
+              options: ["Pohon Beringin", "Bintang", "Rantai", "Kepala Banteng"],
+              answer: 3
+            },
+            {
+              question: "Apa nama pulau terluar di Indonesia?",
+              options: ["Pulau Rote", "Pulau Weh", "Pulau Sebatik", "Pulau Bali"],
+              answer: 2
+            },
+            {
+              question: "Apa bahasa daerah terbesar di Indonesia?",
+              options: ["Jawa", "Sunda", "Batak", "Bugis"],
+              answer: 0
+            },
+            {
+              question: "Siapa tokoh proklamator kemerdekaan Indonesia?",
+              options: ["Soekarno & Hatta", "Soeharto & Habibie", "Jokowi & Megawati", "Sukarno & Habibie"],
+              answer: 0
+            },
+            {
+              question: "Apa nama pegunungan di Bali?",
+              options: ["Gunung Agung", "Gunung Merbabu", "Gunung Rinjani", "Gunung Semeru"],
+              answer: 0
+            },
+            {
+              question: "Siapa penulis lagu 'Indonesia Raya'?",
+              options: ["WR Supratman", "Ismail Marzuki", "Harry Roesli", "Gesang"],
+              answer: 0
+            },
+            {
+              question: "Kapan peristiwa G30S terjadi?",
+              options: ["1965", "1945", "1998", "2000"],
+              answer: 0
+            },
+            {
+              question: "Apa warna bendera negara Jepang?",
+              options: ["Putih dengan lingkaran merah", "Merah putih horizontal", "Merah hijau", "Biru putih merah"],
+              answer: 0
+            }
+          ],
+          hard: [
+            {
+              question: "Siapa Perdana Menteri Indonesia saat pertama kali berdiri?",
+              options: ["Sutan Sjahrir", "Soekarno", "Mohammad Hatta", "Soeharto"],
+              answer: 0
+            },
+            {
+              question: "Apa isi sila pertama Pancasila?",
+              options: ["Ketuhanan Yang Maha Esa", "Kemanusiaan yang adil dan beradab", "Persatuan Indonesia", "Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/ perwakilan"],
+              answer: 0
+            },
+            {
+              question: "Di tahun berapa Indonesia merdeka?",
+              options: ["1945", "1949", "1950", "1938"],
+              answer: 0
+            },
+            {
+              question: "Siapa Menteri Pertahanan pertama Indonesia?",
+              options: ["Sudirman", "Ahmad Yani", "Sutan Sjahrir", "Soekarno"],
+              answer: 0
+            },
+            {
+              question: "Apa nama ibu kota kerajaan Majapahit?",
+              options: ["Trowulan", "Singasari", "Kediri", "Demak"],
+              answer: 0
+            },
+            {
+              question: "Apa nama undang-undang dasar RI yang pertama?",
+              options: ["UUD 1945", "UUD 1950", "UUD 1949", "Pokok-pokok Agraria"],
+              answer: 0
+            },
+            {
+              question: "Apa nama pulau yang disebut The Emerald of the Equator?",
+              options: ["Borneo (Kalimantan)", "Sumatra", "Jawa", "Sulawesi"],
+              answer: 0
+            },
+            {
+              question: "Siapa penemu vaksin polio?",
+              options: ["Jonas Salk", "Louis Pasteur", "Edward Jenner", "Alexander Fleming"],
+              answer: 0
+            },
+            {
+              question: "Siapa tokoh Sumpah Pemuda pada tahun 1928?",
+              options: ["Soegondo Djojopoespito", "Ir. Soekarno", "Mohammad Hatta", "Ki Hadjar Dewantara"],
+              answer: 0
+            },
+            {
+              question: "Dalam ilmu ekonomi, apa arti 'inflasi'?",
+              options: ["Kenaikan harga barang dan jasa secara umum", "Penurunan harga barang", "Stagnasi ekonomi", "Krisis moneter"],
+              answer: 0
+            }
+          ],
         },
-        {
-          question: "Lambang negara Indonesia adalah ...?",
-          options: ["Garuda Pancasila", "Burung Elang", "Macan", "Harimau"],
-          answer: 0
+        science: {
+          easy: [
+            {
+              question: "Air menjadi padat pada suhu ... °C?",
+              options: ["0", "100", "50", "25"],
+              answer: 0
+            },
+            {
+              question: "Planet terdekat dengan Matahari adalah ...?",
+              options: ["Merkurius", "Venus", "Bumi", "Mars"],
+              answer: 0
+            },
+            {
+              question: "Apa sumber energi utama di Bumi?",
+              options: ["Matahari", "Angin", "Air", "Batu bara"],
+              answer: 0
+            },
+            {
+              question: "Fotosintesis dilakukan oleh ...?",
+              options: ["Tumbuhan", "Binatang", "Jamur", "Bakteri"],
+              answer: 0
+            },
+            {
+              question: "Waktu yang dibutuhkan Bumi untuk satu kali berputar disebut ...?",
+              options: ["Satu hari", "Satu bulan", "Satu tahun", "Satu jam"],
+              answer: 0
+            },
+            {
+              question: "Gas yang kita hirup adalah ...?",
+              options: ["Oksigen", "Karbondioksida", "Nitrogen", "Hidrogen"],
+              answer: 0
+            },
+            {
+              question: "Sebutkan hewan yang dikenal cepat berlari?",
+              options: ["Cheetah", "Kura-kura", "Singa", "Gajah"],
+              answer: 0
+            },
+            {
+              question: "Matahari terbit dari arah ...?",
+              options: ["Timur", "Barat", "Utara", "Selatan"],
+              answer: 0
+            },
+            {
+              question: "Alat untuk melihat bintang disebut ...?",
+              options: ["Teleskop", "Mikroskop", "Kamera", "Teropong"],
+              answer: 0
+            },
+            {
+              question: "Organ utama pencernaan manusia adalah ...?",
+              options: ["Perut", "Jantung", "Paru-paru", "Ginjal"],
+              answer: 0
+            }
+          ],
+          medium: [
+            {
+              question: "Apa rumus kimia air?",
+              options: ["H2O", "CO2", "O2", "NaCl"],
+              answer: 0
+            },
+            {
+              question: "Siapa penemu teori gravitasi?",
+              options: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Marie Curie"],
+              answer: 0
+            },
+            {
+              question: "Zat yang mengalirkan listrik pada logam disebut ...?",
+              options: ["Elektron", "Proton", "Neutron", "Ion"],
+              answer: 0
+            },
+            {
+              question: "Apa organ tubuh yang memompa darah?",
+              options: ["Jantung", "Paru-paru", "Hati", "Lambung"],
+              answer: 0
+            },
+            {
+              question: "Kapan Bumi mengelilingi Matahari satu kali?",
+              options: ["Setahun", "Sebulan", "Sehari", "Satu jam"],
+              answer: 0
+            },
+            {
+              question: "Materi menjadi gas pada suhu ... °C?",
+              options: ["100", "0", "50", "25"],
+              answer: 0
+            },
+            {
+              question: "Apa nama unsur dalam tabel periodik dengan simbol 'Fe'?",
+              options: ["Besi", "Emas", "Perak", "Tembaga"],
+              answer: 0
+            },
+            {
+              question: "Jaringan yang menghubungkan otot ke tulang adalah ...?",
+              options: ["Tendon", "Ligamen", "Saraf", "Otot"],
+              answer: 0
+            },
+            {
+              question: "Siapa ilmuwan yang menemukan listrik statis?",
+              options: ["Benjamin Franklin", "Thomas Edison", "Nikola Tesla", "Michael Faraday"],
+              answer: 0
+            },
+            {
+              question: "Proses perubahan cair menjadi gas disebut ...?",
+              options: ["Penguapan", "Pengembunan", "Pembekuan", "Peleburan"],
+              answer: 0
+            }
+          ],
+          hard: [
+            {
+              question: "Apa rumus struktur benzena?",
+              options: ["C6H6", "CH4", "C2H5OH", "C2H2"],
+              answer: 0
+            },
+            {
+              question: "Siapa yang mengembangkan teori relativitas?",
+              options: ["Albert Einstein", "Isaac Newton", "Nikola Tesla", "Galileo Galilei"],
+              answer: 0
+            },
+            {
+              question: "Unit terkecil makhluk hidup adalah ...?",
+              options: ["Sel", "Molekul", "Atom", "Organ"],
+              answer: 0
+            },
+            {
+              question: "Apa nama partikel bermuatan negatif dalam atom?",
+              options: ["Elektron", "Proton", "Neutron", "Ion"],
+              answer: 0
+            },
+            {
+              question: "Apa nama hukum Newton kedua?",
+              options: ["F = m x a", "Hukum Aksi-Reaksi", "Inersia", "Gaya Gravitasi"],
+              answer: 0
+            },
+            {
+              question: "Apa fungsi mitokondria dalam sel?",
+              options: ["Tempat produksi energi", "Pusat arah sel", "Transportasi zat", "Sintesis protein"],
+              answer: 0
+            },
+            {
+              question: "Proses pembelahan sel menjadi dua disebut ...?",
+              options: ["Mitosis", "Meiosis", "Fusi", "Fisi"],
+              answer: 0
+            },
+            {
+              question: "Apa nama hormon yang mengatur gula darah?",
+              options: ["Insulin", "Adrenalin", "Tiroid", "Estrogen"],
+              answer: 0
+            },
+            {
+              question: "Planet dengan suhu terpanas di tata surya adalah ...?",
+              options: ["Venus", "Merkurius", "Mars", "Jupiter"],
+              answer: 0
+            },
+            {
+              question: "Proses perubahan gas menjadi cair disebut ...?",
+              options: ["Kondensasi", "Evaporasi", "Sublimasi", "Fusi"],
+              answer: 0
+            }
+          ]
         },
-        {
-          question: "Bendera Indonesia berwarna ...?",
-          options: ["Merah Putih", "Hijau Kuning", "Biru Putih", "Hitam Putih"],
-          answer: 0
-        },
-        {
-          question: "Hewan apa yang paling cepat di dunia?",
-          options: ["Cheetah", "Elang", "Kuda", "Singapura"],
-          answer: 0
-        },
-        {
-          question: "Apa mata uang Indonesia?",
-          options: ["Rupiah", "Dollar", "Yen", "Euro"],
-          answer: 0
-        },
-        {
-          question: "Gunung tertinggi di Indonesia adalah ...?",
-          options: ["Puncak Jaya", "Semeru", "Rinjani", "Slamet"],
-          answer: 0
-        },
-        {
-          question: "Pulau terbesar di Indonesia adalah ...?",
-          options: ["Kalimantan", "Jawa", "Sumatra", "Sulawesi"],
-          answer: 0
-        },
-        {
-          question: "Lagu kebangsaan Indonesia adalah ...?",
-          options: ["Indonesia Raya", "Tanah Airku", "Rayuan Pulau Kelapa", "Sepanjang Jalan Kenangan"],
-          answer: 0
-        },
-        {
-          question: "Apa bahasa resmi Indonesia?",
-          options: ["Bahasa Indonesia", "Bahasa Jawa", "Bahasa Sunda", "Bahasa Inggris"],
-          answer: 0
-        },
-        {
-          question: "Hari kemerdekaan Indonesia jatuh tanggal ...?",
-          options: ["17 Agustus", "1 Januari", "25 Desember", "5 Mei"],
-          answer: 0
-        },
-        {
-          question: "Ibukota Provinsi Jawa Barat adalah ...?",
-          options: ["Bandung", "Bekasi", "Bogor", "Depok"],
-          answer: 0
+        civics: {
+          easy: [
+            {
+              question: "Siapa pemimpin negara Indonesia saat ini (2024)?",
+              options: ["Joko Widodo", "Soekarno", "Habibie", "Megawati"],
+              answer: 0
+            },
+            {
+              question: "Apa nama lambang negara Indonesia?",
+              options: ["Garuda Pancasila", "Elang Jawa", "Macan", "Banteng"],
+              answer: 0
+            },
+            {
+              question: "Lambang sila ke-4 Pancasila adalah ...?",
+              options: ["Kepala Banteng", "Pohon Beringin", "Rantai", "Bintang"],
+              answer: 0
+            },
+            {
+              question: "Lambang sila ke-5 Pancasila adalah ...?",
+              options: ["Padi dan Kapas", "Burung Garuda", "Bintang", "Rantai"],
+              answer: 0
+            },
+            {
+              question: "Apa tujuan utama Pancasila?",
+              options: ["Dasar negara Indonesia", "Bendera negara", "Lagu kebangsaan", "Nama presiden"],
+              answer: 0
+            },
+            {
+              question: "Tanggal berapa Indonesia merdeka?",
+              options: ["17 Agustus 1945", "1 Januari 1945", "25 Desember 1945", "5 Mei 1945"],
+              answer: 0
+            },
+            {
+              question: "Pemilihan presiden berlangsung setiap ...?",
+              options: ["5 tahun", "4 tahun", "6 tahun", "3 tahun"],
+              answer: 0
+            },
+            {
+              question: "Siapa yang membuat lagu Indonesia Raya?",
+              options: ["WR Supratman", "Ismail Marzuki", "Gesang", "Harry Roesli"],
+              answer: 0
+            },
+            {
+              question: "Apa nama sistem pemerintahan Indonesia?",
+              options: ["Republik", "Monarki", "Diktator", "Komunis"],
+              answer: 0
+            },
+            {
+              question: "Undang-undang dasar Indonesia disebut ...?",
+              options: ["UUD 1945", "UUD 1950", "UUD 1949", "UUD 1965"],
+              answer: 0
+            }
+          ],
+          medium: [
+            {
+              question: "Siapa yang menulis teks proklamasi kemerdekaan Indonesia?",
+              options: ["Soekarno & Hatta", "Mohammad Yamin", "Sutan Sjahrir", "Ki Hajar Dewantara"],
+              answer: 0
+            },
+            {
+              question: "Apa tugas DPR RI?",
+              options: ["Membuat undang-undang", "Mengadili", "Menetapkan pajak", "Memimpin tentara"],
+              answer: 0
+            },
+            {
+              question: "Sistem pemerintahan Indonesia adalah ...?",
+              options: ["Demokrasi Pancasila", "Monarki Konstitusional", "Komunis", "Diktator"],
+              answer: 0
+            },
+            {
+              question: "Berapa anggota DPR RI periode 2019-2024?",
+              options: ["575", "500", "600", "450"],
+              answer: 0
+            },
+            {
+              question: "Apa yang dimaksud dengan HAM?",
+              options: ["Hak Asasi Manusia", "Hak Akses Media", "Hukum Air Minum", "Hak Anggota Masyarakat"],
+              answer: 0
+            },
+            {
+              question: "Apa nama lembaga pemilihan umum di Indonesia?",
+              options: ["KPU", "Bawaslu", "MPR", "DPR"],
+              answer: 0
+            },
+            {
+              question: "Berapa lama masa jabatan presiden Indonesia?",
+              options: ["5 tahun", "4 tahun", "6 tahun", "3 tahun"],
+              answer: 0
+            },
+            {
+              question: "Apa isi sila kedua Pancasila?",
+              options: ["Kemanusiaan yang adil dan beradab", "Ketuhanan Yang Maha Esa", "Persatuan Indonesia", "Kerakyatan"],
+              answer: 0
+            },
+            {
+              question: "Apa arti lambang rantai di sila ke-4?",
+              options: ["Persatuan dan kesatuan", "Keadilan sosial", "Ketuhanan Yang Maha Esa", "Kemanusiaan"],
+              answer: 0
+            },
+            {
+              question: "Apa kewajiban warga negara Indonesia?",
+              options: ["Mematuhi hukum", "Menjadi tentara", "Menjadi presiden", "Mengatur pajak"],
+              answer: 0
+            }
+          ],
+          hard: [
+            {
+              question: "Apa arti Pancasila secara etimologis?",
+              options: ["Lima dasar", "Lima sila", "Lima pilar", "Lima aturan"],
+              answer: 0
+            },
+            {
+              question: "Siapa ketua MPR periode 2019-2024?",
+              options: ["Bambang Soesatyo", "Zulkifli Hasan", "Megawati", "Prabowo"],
+              answer: 0
+            },
+            {
+              question: "Sistem ketatanegaraan Indonesia berbentuk ...?",
+              options: ["Nirbaits", "Negara Kesatuan", "Federal", "Konfederasi"],
+              answer: 1
+            },
+            {
+              question: "Apa fungsi Mahkamah Konstitusi?",
+              options: ["Menguji undang-undang terhadap UUD", "Mengatur pajak", "Menentukan DPR", "Memutuskan presiden"],
+              answer: 0
+            },
+            {
+              question: "Apa unsur pokok UUD 1945?",
+              options: ["Pembukaan dan pasal-pasal", "Hanya pembukaan", "Hanya pasal-pasal", "Peraturan presiden"],
+              answer: 0
+            },
+            {
+              question: "Sistem pemilu legislatif Indonesia berbasis ...?",
+              options: ["Proporsional terbuka", "Distrik murni", "Sistem mayoritas", "Sistem blok"],
+              answer: 0
+            },
+            {
+              question: "Berapa jumlah anggota DPD RI?",
+              options: ["136", "100", "75", "120"],
+              answer: 0
+            },
+            {
+              question: "Undang-undang terendah di Indonesia adalah ...?",
+              options: ["Peraturan Desa", "Peraturan Pemerintah", "UU", "Keputusan Presiden"],
+              answer: 0
+            },
+            {
+              question: "Siapa yang berhak mengajukan uji materi ke MK?",
+              options: ["Warga Negara", "Presiden", "DPR", "Mahkamah Agung"],
+              answer: 0
+            },
+            {
+              question: "Apa makna lambang Garuda Pancasila?",
+              options: ["Simbol negara dan nilai dasar bangsa", "Simbol hewan nasional", "Lambang partai politik", "Logo pemerintahan"],
+              answer: 0
+            }
+          ]
         }
-      ],
-      medium: [
-        {
-          question: "Siapa Presiden Indonesia yang pertama?",
-          options: ["Soekarno", "Soeharto", "Habibie", "Jokowi"],
-          answer: 0
-        },
-        {
-          question: "Indonesia terdiri dari berapa provinsi?",
-          options: ["34", "36", "30", "32"],
-          answer: 0
-        },
-        {
-          question: "Apa lambang sila ke-3 Pancasila?",
-          options: ["Pohon Beringin", "Bintang", "Rantai", "Kepala Banteng"],
-          answer: 3
-        },
-        {
-          question: "Apa nama pulau terluar di Indonesia?",
-          options: ["Pulau Rote", "Pulau Weh", "Pulau Sebatik", "Pulau Bali"],
-          answer: 2
-        },
-        {
-          question: "Apa bahasa daerah terbesar di Indonesia?",
-          options: ["Jawa", "Sunda", "Batak", "Bugis"],
-          answer: 0
-        },
-        {
-          question: "Siapa tokoh proklamator kemerdekaan Indonesia?",
-          options: ["Soekarno & Hatta", "Soeharto & Habibie", "Jokowi & Megawati", "Sukarno & Habibie"],
-          answer: 0
-        },
-        {
-          question: "Apa nama pegunungan di Bali?",
-          options: ["Gunung Agung", "Gunung Merbabu", "Gunung Rinjani", "Gunung Semeru"],
-          answer: 0
-        },
-        {
-          question: "Siapa penulis lagu 'Indonesia Raya'?",
-          options: ["WR Supratman", "Ismail Marzuki", "Harry Roesli", "Gesang"],
-          answer: 0
-        },
-        {
-          question: "Kapan peristiwa G30S terjadi?",
-          options: ["1965", "1945", "1998", "2000"],
-          answer: 0
-        },
-        {
-          question: "Apa warna bendera negara Jepang?",
-          options: ["Putih dengan lingkaran merah", "Merah putih horizontal", "Merah hijau", "Biru putih merah"],
-          answer: 0
+      };
+
+      const topicNames = { general: "Pengetahuan Umum", science: "SAINS", civics: "Kewarganegaraan Indonesia" };
+      const difficultyNames = { easy: "Mudah", medium: "Sedang", hard: "Sulit" };
+
+      // App state
+      let currentTopic = null;
+      let currentDifficulty = null;
+      let questions = [];
+      let currentIndex = 0;
+      let score = 0;
+      let userAnswers = [];
+      let shuffledOptions = [];
+
+      // Leaderboard data key
+      const LB_STORAGE_KEY = 'quizLeaderboard';
+      let leaderboardData = [];
+
+      // DOM elements
+      const setupSection = document.getElementById('setup');
+      const playerNameInput = document.getElementById('player-name');
+      const topicSelect = document.getElementById('topic-select');
+      const difficultySelect = document.getElementById('difficulty-select');
+      const startBtn = document.getElementById('start-btn');
+
+      const quizSection = document.getElementById('quiz');
+      const questionText = document.getElementById('question-text');
+      const optionsList = document.getElementById('options-list');
+      const nextBtn = document.getElementById('next-btn');
+      const questionCount = document.getElementById('question-count');
+
+      const resultSection = document.getElementById('result');
+      const scoreText = document.getElementById('score-text');
+      const restartBtn = document.getElementById('restart-btn');
+
+      // Leaderboard DOM
+      const lbTopicFilter = document.getElementById('lb-topic-filter');
+      const lbDifficultyFilter = document.getElementById('lb-difficulty-filter');
+      const leaderboardTbody = document.getElementById('leaderboard-tbody');
+
+      // Enable start button if name, topic, difficulty selected
+      function checkStartValidity() {
+        startBtn.disabled = !(playerNameInput.value.trim() && topicSelect.value && difficultySelect.value);
+      }
+      playerNameInput.addEventListener('input', checkStartValidity);
+      topicSelect.addEventListener('change', checkStartValidity);
+      difficultySelect.addEventListener('change', checkStartValidity);
+
+      // Fisher-Yates shuffle
+      function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
         }
-      ],
-      hard: [
-        {
-          question: "Siapa Perdana Menteri Indonesia saat pertama kali berdiri?",
-          options: ["Sutan Sjahrir", "Soekarno", "Mohammad Hatta", "Soeharto"],
-          answer: 0
-        },
-        {
-          question: "Apa isi sila pertama Pancasila?",
-          options: ["Ketuhanan Yang Maha Esa", "Kemanusiaan yang adil dan beradab", "Persatuan Indonesia", "Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/ perwakilan"],
-          answer: 0
-        },
-        {
-          question: "Di tahun berapa Indonesia merdeka?",
-          options: ["1945", "1949", "1950", "1938"],
-          answer: 0
-        },
-        {
-          question: "Siapa Menteri Pertahanan pertama Indonesia?",
-          options: ["Sudirman", "Ahmad Yani", "Sutan Sjahrir", "Soekarno"],
-          answer: 0
-        },
-        {
-          question: "Apa nama ibu kota kerajaan Majapahit?",
-          options: ["Trowulan", "Singasari", "Kediri", "Demak"],
-          answer: 0
-        },
-        {
-          question: "Apa nama undang-undang dasar RI yang pertama?",
-          options: ["UUD 1945", "UUD 1950", "UUD 1949", "Pokok-pokok Agraria"],
-          answer: 0
-        },
-        {
-          question: "Apa nama pulau yang disebut The Emerald of the Equator?",
-          options: ["Borneo (Kalimantan)", "Sumatra", "Jawa", "Sulawesi"],
-          answer: 0
-        },
-        {
-          question: "Siapa penemu vaksin polio?",
-          options: ["Jonas Salk", "Louis Pasteur", "Edward Jenner", "Alexander Fleming"],
-          answer: 0
-        },
-        {
-          question: "Siapa tokoh Sumpah Pemuda pada tahun 1928?",
-          options: ["Soegondo Djojopoespito", "Ir. Soekarno", "Mohammad Hatta", "Ki Hadjar Dewantara"],
-          answer: 0
-        },
-        {
-          question: "Dalam ilmu ekonomi, apa arti 'inflasi'?",
-          options: ["Kenaikan harga barang dan jasa secara umum", "Penurunan harga barang", "Stagnasi ekonomi", "Krisis moneter"],
-          answer: 0
+      }
+
+      // Load leaderboard from localStorage
+      function loadLeaderboard() {
+        try {
+          const data = localStorage.getItem(LB_STORAGE_KEY);
+          leaderboardData = data ? JSON.parse(data) : [];
+        } catch (e) {
+          leaderboardData = [];
         }
-      ],
-    },
-    science: {
-      easy: [
-        {
-          question: "Air menjadi padat pada suhu ... °C?",
-          options: ["0", "100", "50", "25"],
-          answer: 0
-        },
-        {
-          question: "Planet terdekat dengan Matahari adalah ...?",
-          options: ["Merkurius", "Venus", "Bumi", "Mars"],
-          answer: 0
-        },
-        {
-          question: "Apa sumber energi utama di Bumi?",
-          options: ["Matahari", "Angin", "Air", "Batu bara"],
-          answer: 0
-        },
-        {
-          question: "Fotosintesis dilakukan oleh ...?",
-          options: ["Tumbuhan", "Binatang", "Jamur", "Bakteri"],
-          answer: 0
-        },
-        {
-          question: "Waktu yang dibutuhkan Bumi untuk satu kali berputar disebut ...?",
-          options: ["Satu hari", "Satu bulan", "Satu tahun", "Satu jam"],
-          answer: 0
-        },
-        {
-          question: "Gas yang kita hirup adalah ...?",
-          options: ["Oksigen", "Karbondioksida", "Nitrogen", "Hidrogen"],
-          answer: 0
-        },
-        {
-          question: "Sebutkan hewan yang dikenal cepat berlari?",
-          options: ["Cheetah", "Kura-kura", "Singa", "Gajah"],
-          answer: 0
-        },
-        {
-          question: "Matahari terbit dari arah ...?",
-          options: ["Timur", "Barat", "Utara", "Selatan"],
-          answer: 0
-        },
-        {
-          question: "Alat untuk melihat bintang disebut ...?",
-          options: ["Teleskop", "Mikroskop", "Kamera", "Teropong"],
-          answer: 0
-        },
-        {
-          question: "Organ utama pencernaan manusia adalah ...?",
-          options: ["Perut", "Jantung", "Paru-paru", "Ginjal"],
-          answer: 0
+      }
+
+      // Save leaderboard to localStorage
+      function saveLeaderboard() {
+        localStorage.setItem(LB_STORAGE_KEY, JSON.stringify(leaderboardData));
+      }
+
+      // Render leaderboard table with optional filters
+      function renderLeaderboard() {
+        const topicFilterVal = lbTopicFilter.value;
+        const difficultyFilterVal = lbDifficultyFilter.value;
+
+        let filteredData = leaderboardData;
+
+        if (topicFilterVal !== 'all') {
+          filteredData = filteredData.filter(item => item.topic === topicFilterVal);
         }
-      ],
-      medium: [
-        {
-          question: "Apa rumus kimia air?",
-          options: ["H2O", "CO2", "O2", "NaCl"],
-          answer: 0
-        },
-        {
-          question: "Siapa penemu teori gravitasi?",
-          options: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Marie Curie"],
-          answer: 0
-        },
-        {
-          question: "Zat yang mengalirkan listrik pada logam disebut ...?",
-          options: ["Elektron", "Proton", "Neutron", "Ion"],
-          answer: 0
-        },
-        {
-          question: "Apa organ tubuh yang memompa darah?",
-          options: ["Jantung", "Paru-paru", "Hati", "Lambung"],
-          answer: 0
-        },
-        {
-          question: "Kapan Bumi mengelilingi Matahari satu kali?",
-          options: ["Setahun", "Sebulan", "Sehari", "Satu jam"],
-          answer: 0
-        },
-        {
-          question: "Materi menjadi gas pada suhu ... °C?",
-          options: ["100", "0", "50", "25"],
-          answer: 0
-        },
-        {
-          question: "Apa nama unsur dalam tabel periodik dengan simbol 'Fe'?",
-          options: ["Besi", "Emas", "Perak", "Tembaga"],
-          answer: 0
-        },
-        {
-          question: "Jaringan yang menghubungkan otot ke tulang adalah ...?",
-          options: ["Tendon", "Ligamen", "Saraf", "Otot"],
-          answer: 0
-        },
-        {
-          question: "Siapa ilmuwan yang menemukan listrik statis?",
-          options: ["Benjamin Franklin", "Thomas Edison", "Nikola Tesla", "Michael Faraday"],
-          answer: 0
-        },
-        {
-          question: "Proses perubahan cair menjadi gas disebut ...?",
-          options: ["Penguapan", "Pengembunan", "Pembekuan", "Peleburan"],
-          answer: 0
+        if (difficultyFilterVal !== 'all') {
+          filteredData = filteredData.filter(item => item.difficulty === difficultyFilterVal);
         }
-      ],
-      hard: [
-        {
-          question: "Apa rumus struktur benzena?",
-          options: ["C6H6", "CH4", "C2H5OH", "C2H2"],
-          answer: 0
-        },
-        {
-          question: "Siapa yang mengembangkan teori relativitas?",
-          options: ["Albert Einstein", "Isaac Newton", "Nikola Tesla", "Galileo Galilei"],
-          answer: 0
-        },
-        {
-          question: "Unit terkecil makhluk hidup adalah ...?",
-          options: ["Sel", "Molekul", "Atom", "Organ"],
-          answer: 0
-        },
-        {
-          question: "Apa nama partikel bermuatan negatif dalam atom?",
-          options: ["Elektron", "Proton", "Neutron", "Ion"],
-          answer: 0
-        },
-        {
-          question: "Apa nama hukum Newton kedua?",
-          options: ["F = m x a", "Hukum Aksi-Reaksi", "Inersia", "Gaya Gravitasi"],
-          answer: 0
-        },
-        {
-          question: "Apa fungsi mitokondria dalam sel?",
-          options: ["Tempat produksi energi", "Pusat arah sel", "Transportasi zat", "Sintesis protein"],
-          answer: 0
-        },
-        {
-          question: "Proses pembelahan sel menjadi dua disebut ...?",
-          options: ["Mitosis", "Meiosis", "Fusi", "Fisi"],
-          answer: 0
-        },
-        {
-          question: "Apa nama hormon yang mengatur gula darah?",
-          options: ["Insulin", "Adrenalin", "Tiroid", "Estrogen"],
-          answer: 0
-        },
-        {
-          question: "Planet dengan suhu terpanas di tata surya adalah ...?",
-          options: ["Venus", "Merkurius", "Mars", "Jupiter"],
-          answer: 0
-        },
-        {
-          question: "Proses perubahan gas menjadi cair disebut ...?",
-          options: ["Kondensasi", "Evaporasi", "Sublimasi", "Fusi"],
-          answer: 0
+
+        // Sort descending by score, then date descending
+        filteredData.sort((a, b) => b.score - a.score || new Date(b.date) - new Date(a.date));
+
+        // Take top 10
+        const top10 = filteredData.slice(0, 10);
+
+        leaderboardTbody.innerHTML = '';
+        if (top10.length === 0) {
+          leaderboardTbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#ccc;">Tidak ada data leaderboard</td></tr>`;
+          return;
         }
-      ]
-    },
-    civics : {
-      easy: [
-        {
-          question: "Siapa pemimpin negara Indonesia saat ini (2024)?",
-          options: ["Joko Widodo", "Soekarno", "Habibie", "Megawati"],
-          answer: 0
-        },
-        {
-          question: "Apa nama lambang negara Indonesia?",
-          options: ["Garuda Pancasila", "Elang Jawa", "Macan", "Banteng"],
-          answer: 0
-        },
-        {
-          question: "Lambang sila ke-4 Pancasila adalah ...?",
-          options: ["Kepala Banteng", "Pohon Beringin", "Rantai", "Bintang"],
-          answer: 0
-        },
-        {
-          question: "Lambang sila ke-5 Pancasila adalah ...?",
-          options: ["Padi dan Kapas", "Burung Garuda", "Bintang", "Rantai"],
-          answer: 0
-        },
-        {
-          question: "Apa tujuan utama Pancasila?",
-          options: ["Dasar negara Indonesia", "Bendera negara", "Lagu kebangsaan", "Nama presiden"],
-          answer: 0
-        },
-        {
-          question: "Tanggal berapa Indonesia merdeka?",
-          options: ["17 Agustus 1945", "1 Januari 1945", "25 Desember 1945", "5 Mei 1945"],
-          answer: 0
-        },
-        {
-          question: "Pemilihan presiden berlangsung setiap ...?",
-          options: ["5 tahun", "4 tahun", "6 tahun", "3 tahun"],
-          answer: 0
-        },
-        {
-          question: "Siapa yang membuat lagu Indonesia Raya?",
-          options: ["WR Supratman", "Ismail Marzuki", "Gesang", "Harry Roesli"],
-          answer: 0
-        },
-        {
-          question: "Apa nama sistem pemerintahan Indonesia?",
-          options: ["Republik", "Monarki", "Diktator", "Komunis"],
-          answer: 0
-        },
-        {
-          question: "Undang-undang dasar Indonesia disebut ...?",
-          options: ["UUD 1945", "UUD 1950", "UUD 1949", "UUD 1965"],
-          answer: 0
-        }
-      ],
-      medium: [
-        {
-          question: "Siapa yang menulis teks proklamasi kemerdekaan Indonesia?",
-          options: ["Soekarno & Hatta", "Mohammad Yamin", "Sutan Sjahrir", "Ki Hajar Dewantara"],
-          answer: 0
-        },
-        {
-          question: "Apa tugas DPR RI?",
-          options: ["Membuat undang-undang", "Mengadili", "Menetapkan pajak", "Memimpin tentara"],
-          answer: 0
-        },
-        {
-          question: "Sistem pemerintahan Indonesia adalah ...?",
-          options: ["Demokrasi Pancasila", "Monarki Konstitusional", "Komunis", "Diktator"],
-          answer: 0
-        },
-        {
-          question: "Berapa anggota DPR RI periode 2019-2024?",
-          options: ["575", "500", "600", "450"],
-          answer: 0
-        },
-        {
-          question: "Apa yang dimaksud dengan HAM?",
-          options: ["Hak Asasi Manusia", "Hak Akses Media", "Hukum Air Minum", "Hak Anggota Masyarakat"],
-          answer: 0
-        },
-        {
-          question: "Apa nama lembaga pemilihan umum di Indonesia?",
-          options: ["KPU", "Bawaslu", "MPR", "DPR"],
-          answer: 0
-        },
-        {
-          question: "Berapa lama masa jabatan presiden Indonesia?",
-          options: ["5 tahun", "4 tahun", "6 tahun", "3 tahun"],
-          answer: 0
-        },
-        {
-          question: "Apa isi sila kedua Pancasila?",
-          options: ["Kemanusiaan yang adil dan beradab", "Ketuhanan Yang Maha Esa", "Persatuan Indonesia", "Kerakyatan"],
-          answer: 0
-        },
-        {
-          question: "Apa arti lambang rantai di sila ke-4?",
-          options: ["Persatuan dan kesatuan", "Keadilan sosial", "Ketuhanan Yang Maha Esa", "Kemanusiaan"],
-          answer: 0
-        },
-        {
-          question: "Apa kewajiban warga negara Indonesia?",
-          options: ["Mematuhi hukum", "Menjadi tentara", "Menjadi presiden", "Mengatur pajak"],
-          answer: 0
-        }
-      ],
-      hard: [
-        {
-          question: "Apa arti Pancasila secara etimologis?",
-          options: ["Lima dasar", "Lima sila", "Lima pilar", "Lima aturan"],
-          answer: 0
-        },
-        {
-          question: "Siapa ketua MPR periode 2019-2024?",
-          options: ["Bambang Soesatyo", "Zulkifli Hasan", "Megawati", "Prabowo"],
-          answer: 0
-        },
-        {
-          question: "Sistem ketatanegaraan Indonesia berbentuk ...?",
-          options: ["Nirbaits", "Negara Kesatuan", "Federal", "Konfederasi"],
-          answer: 1
-        },
-        {
-          question: "Apa fungsi Mahkamah Konstitusi?",
-          options: ["Menguji undang-undang terhadap UUD", "Mengatur pajak", "Menentukan DPR", "Memutuskan presiden"],
-          answer: 0
-        },
-        {
-          question: "Apa unsur pokok UUD 1945?",
-          options: ["Pembukaan dan pasal-pasal", "Hanya pembukaan", "Hanya pasal-pasal", "Peraturan presiden"],
-          answer: 0
-        },
-        {
-          question: "Sistem pemilu legislatif Indonesia berbasis ...?",
-          options: ["Proporsional terbuka", "Distrik murni", "Sistem mayoritas", "Sistem blok"],
-          answer: 0
-        },
-        {
-          question: "Berapa jumlah anggota DPD RI?",
-          options: ["136", "100", "75", "120"],
-          answer: 0
-        },
-        {
-          question: "Undang-undang terendah di Indonesia adalah ...?",
-          options: ["Peraturan Desa", "Peraturan Pemerintah", "UU", "Keputusan Presiden"],
-          answer: 0
-        },
-        {
-          question: "Siapa yang berhak mengajukan uji materi ke MK?",
-          options: ["Warga Negara", "Presiden", "DPR", "Mahkamah Agung"],
-          answer: 0
-        },
-        {
-          question: "Apa makna lambang Garuda Pancasila?",
-          options: ["Simbol negara dan nilai dasar bangsa", "Simbol hewan nasional", "Lambang partai politik", "Logo pemerintahan"],
-          answer: 0
-        }
-      ]
-    }
-  };
 
-  const topicNames = { general: "Pengetahuan Umum", science: "SAINS", civics: "Kewarganegaraan Indonesia" };
-  const difficultyNames = { easy: "Mudah", medium: "Sedang", hard: "Sulit" };
+        top10.forEach((item, i) => {
+          const tr = document.createElement('tr');
 
-  // App state
-  let currentTopic = null;
-  let currentDifficulty = null;
-  let questions = [];
-  let currentIndex = 0;
-  let score = 0;
-  let userAnswers = [];
-  let shuffledOptions = [];
+          const dateFormatted = new Date(item.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
 
-  // Leaderboard data key
-  const LB_STORAGE_KEY = 'quizLeaderboard';
-  let leaderboardData = [];
-
-  // DOM elements
-  const setupSection = document.getElementById('setup');
-  const playerNameInput = document.getElementById('player-name');
-  const topicSelect = document.getElementById('topic-select');
-  const difficultySelect = document.getElementById('difficulty-select');
-  const startBtn = document.getElementById('start-btn');
-
-  const quizSection = document.getElementById('quiz');
-  const questionText = document.getElementById('question-text');
-  const optionsList = document.getElementById('options-list');
-  const nextBtn = document.getElementById('next-btn');
-  const questionCount = document.getElementById('question-count');
-
-  const resultSection = document.getElementById('result');
-  const scoreText = document.getElementById('score-text');
-  const restartBtn = document.getElementById('restart-btn');
-
-  // Leaderboard DOM
-  const lbTopicFilter = document.getElementById('lb-topic-filter');
-  const lbDifficultyFilter = document.getElementById('lb-difficulty-filter');
-  const leaderboardTbody = document.getElementById('leaderboard-tbody');
-
-  // Enable start button if name, topic, difficulty selected
-  function checkStartValidity() {
-    startBtn.disabled = !(playerNameInput.value.trim() && topicSelect.value && difficultySelect.value);
-  }
-  playerNameInput.addEventListener('input', checkStartValidity);
-  topicSelect.addEventListener('change', checkStartValidity);
-  difficultySelect.addEventListener('change', checkStartValidity);
-
-  // Fisher-Yates shuffle
-  function shuffleArray(arr) {
-    for (let i = arr.length -1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i +1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-  }
-
-  // Load leaderboard from localStorage
-  function loadLeaderboard() {
-    try {
-      const data = localStorage.getItem(LB_STORAGE_KEY);
-      leaderboardData = data ? JSON.parse(data) : [];
-    } catch(e) {
-      leaderboardData = [];
-    }
-  }
-
-  // Save leaderboard to localStorage
-  function saveLeaderboard() {
-    localStorage.setItem(LB_STORAGE_KEY, JSON.stringify(leaderboardData));
-  }
-
-  // Render leaderboard table with optional filters
-  function renderLeaderboard() {
-    const topicFilterVal = lbTopicFilter.value;
-    const difficultyFilterVal = lbDifficultyFilter.value;
-
-    let filteredData = leaderboardData;
-
-    if(topicFilterVal !== 'all') {
-      filteredData = filteredData.filter(item => item.topic === topicFilterVal);
-    }
-    if(difficultyFilterVal !== 'all') {
-      filteredData = filteredData.filter(item => item.difficulty === difficultyFilterVal);
-    }
-
-    // Sort descending by score, then date descending
-    filteredData.sort((a,b) => b.score - a.score || new Date(b.date) - new Date(a.date));
-
-    // Take top 10
-    const top10 = filteredData.slice(0, 10);
-
-    leaderboardTbody.innerHTML = '';
-    if(top10.length === 0){
-      leaderboardTbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#ccc;">Tidak ada data leaderboard</td></tr>`;
-      return;
-    }
-
-    top10.forEach((item, i) => {
-      const tr = document.createElement('tr');
-
-      const dateFormatted = new Date(item.date).toLocaleDateString('id-ID', {year:'numeric', month:'short', day:'numeric'});
-
-      tr.innerHTML = `
-        <td>${i+1}</td>
+          tr.innerHTML = `
+        <td>${i + 1}</td>
         <td>${escapeHtml(item.name)}</td>
         <td>${item.score}</td>
         <td>${topicNames[item.topic] || item.topic}</td>
         <td>${difficultyNames[item.difficulty] || item.difficulty}</td>
         <td>${dateFormatted}</td>
       `;
-      leaderboardTbody.appendChild(tr);
-    });
-  }
+          leaderboardTbody.appendChild(tr);
+        });
+      }
 
-  // Simple HTML escape to prevent injection
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
+      // Simple HTML escape to prevent injection
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
 
-  // Start quiz with chosen settings
-  function startQuiz() {
-    currentTopic = topicSelect.value;
-    currentDifficulty = difficultySelect.value;
-    const pool = questionBank[currentTopic][currentDifficulty];
+      // Start quiz with chosen settings
+      function startQuiz() {
+        currentTopic = topicSelect.value;
+        currentDifficulty = difficultySelect.value;
+        const pool = questionBank[currentTopic][currentDifficulty];
 
-    // Clone and shuffle questions pool
-    questions = [...pool];
-    shuffleArray(questions);
+        // Clone and shuffle questions pool
+        questions = [...pool];
+        shuffleArray(questions);
 
-    // Pick 10 or less questions if less available
-    questions = questions.slice(0, 10);
+        // Pick 10 or less questions if less available
+        questions = questions.slice(0, 10);
 
-    currentIndex = 0;
-    score = 0;
-    userAnswers = [];
-    shuffledOptions = [];
+        currentIndex = 0;
+        score = 0;
+        userAnswers = [];
+        shuffledOptions = [];
 
-    setupSection.classList.remove('active');
-    resultSection.classList.remove('active');
-    quizSection.classList.add('active');
+        setupSection.classList.remove('active');
+        resultSection.classList.remove('active');
+        quizSection.classList.add('active');
 
-    renderQuestion();
-  }
+        renderQuestion();
+      }
 
-  // Render current question and options - with answer shuffling
-  function renderQuestion() {
-    const q = questions[currentIndex];
-    questionText.textContent = `Soal ${currentIndex + 1}: ${q.question}`;
+      // Render current question and options - with answer shuffling
+      function renderQuestion() {
+        const q = questions[currentIndex];
+        questionText.textContent = `Soal ${currentIndex + 1}: ${q.question}`;
 
-    // Lock next btn until user select
-    nextBtn.disabled = true;
+        // Lock next btn until user select
+        nextBtn.disabled = true;
 
-    // Prepare options with original index
-    let optionsWithIndex = q.options.map((opt, idx) => ({opt, idx}));
-    shuffleArray(optionsWithIndex);
+        // Prepare options with original index
+        let optionsWithIndex = q.options.map((opt, idx) => ({ opt, idx }));
+        shuffleArray(optionsWithIndex);
 
-    // Store shuffled options for checking answer on selection
-    shuffledOptions = optionsWithIndex;
+        // Store shuffled options for checking answer on selection
+        shuffledOptions = optionsWithIndex;
 
-    optionsList.innerHTML = '';
-    optionsWithIndex.forEach(({opt, idx}, i) => {
-      const optionDiv = document.createElement('div');
-      optionDiv.classList.add('option');
-      optionDiv.setAttribute('role', 'listitem');
-      optionDiv.setAttribute('tabindex', 0);
-      optionDiv.textContent = opt;
-      optionDiv.dataset.originalIndex = idx;
-      optionDiv.dataset.shuffledIndex = i;
-      optionDiv.addEventListener('click', onSelectOption);
-      optionDiv.addEventListener('keydown', function(e){
-        if(e.key === 'Enter' || e.key === ' '){
-          e.preventDefault();
-          this.click();
+        optionsList.innerHTML = '';
+        optionsWithIndex.forEach(({ opt, idx }, i) => {
+          const optionDiv = document.createElement('div');
+          optionDiv.classList.add('option');
+          optionDiv.setAttribute('role', 'listitem');
+          optionDiv.setAttribute('tabindex', 0);
+          optionDiv.textContent = opt;
+          optionDiv.dataset.originalIndex = idx;
+          optionDiv.dataset.shuffledIndex = i;
+          optionDiv.addEventListener('click', onSelectOption);
+          optionDiv.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.click();
+            }
+          });
+          optionsList.appendChild(optionDiv);
+        });
+
+        updateQuestionCount();
+      }
+
+      // Update question count display
+      function updateQuestionCount() {
+        questionCount.textContent = `Topik: ${topicNames[currentTopic]} | Tingkat Kesulitan: ${difficultyNames[currentDifficulty]} | Soal ke ${currentIndex + 1} dari ${questions.length}`;
+      }
+
+      // Handle option selection
+      function onSelectOption(e) {
+        if (nextBtn.disabled === false) return;
+
+        const selectedDiv = e.currentTarget;
+        const selectedOriginalIdx = parseInt(selectedDiv.dataset.originalIndex, 10);
+        const correctOriginalIndex = questions[currentIndex].answer;
+
+        [...optionsList.children].forEach(optionEl => {
+          optionEl.classList.remove('selected', 'correct', 'incorrect');
+          optionEl.removeAttribute('aria-pressed');
+        });
+
+        selectedDiv.classList.add('selected');
+        selectedDiv.setAttribute('aria-pressed', 'true');
+
+        if (selectedOriginalIdx === correctOriginalIndex) {
+          selectedDiv.classList.add('correct');
+          score++;
+        } else {
+          selectedDiv.classList.add('incorrect');
+          for (const optEl of optionsList.children) {
+            if (parseInt(optEl.dataset.originalIndex, 10) === correctOriginalIndex) {
+              optEl.classList.add('correct');
+              break;
+            }
+          }
         }
-      });
-      optionsList.appendChild(optionDiv);
-    });
 
-    updateQuestionCount();
-  }
+        userAnswers[currentIndex] = selectedOriginalIdx;
+        nextBtn.disabled = false;
+        nextBtn.focus();
+      }
 
-  // Update question count display
-  function updateQuestionCount(){
-    questionCount.textContent = `Topik: ${topicNames[currentTopic]} | Tingkat Kesulitan: ${difficultyNames[currentDifficulty]} | Soal ke ${currentIndex + 1} dari ${questions.length}`;
-  }
-
-  // Handle option selection
-  function onSelectOption(e){
-    if (nextBtn.disabled === false) return;
-
-    const selectedDiv = e.currentTarget;
-    const selectedOriginalIdx = parseInt(selectedDiv.dataset.originalIndex, 10);
-    const correctOriginalIndex = questions[currentIndex].answer;
-
-    [...optionsList.children].forEach(optionEl => {
-      optionEl.classList.remove('selected','correct','incorrect');
-      optionEl.removeAttribute('aria-pressed');
-    });
-
-    selectedDiv.classList.add('selected');
-    selectedDiv.setAttribute('aria-pressed', 'true');
-
-    if(selectedOriginalIdx === correctOriginalIndex) {
-      selectedDiv.classList.add('correct');
-      score++;
-    } else {
-      selectedDiv.classList.add('incorrect');
-      for(const optEl of optionsList.children){
-        if(parseInt(optEl.dataset.originalIndex,10) === correctOriginalIndex){
-          optEl.classList.add('correct');
-          break;
+      // Move to next question or show result
+      function onNextQuestion() {
+        currentIndex++;
+        if (currentIndex < questions.length) {
+          renderQuestion();
+        } else {
+          showResult();
         }
       }
-    }
 
-    userAnswers[currentIndex] = selectedOriginalIdx;
-    nextBtn.disabled = false;
-    nextBtn.focus();
-  }
+      // Show result page
+      function showResult() {
+        quizSection.classList.remove('active');
+        resultSection.classList.add('active');
 
-  // Move to next question or show result
-  function onNextQuestion(){
-    currentIndex++;
-    if(currentIndex < questions.length){
-      renderQuestion();
-    } else {
-      showResult();
-    }
-  }
+        scoreText.textContent = `Skor Anda: ${score} dari ${questions.length} (${Math.round(score / questions.length * 100)}%)`;
 
-  // Show result page
-  function showResult(){
-    quizSection.classList.remove('active');
-    resultSection.classList.add('active');
+        // Simpan ke leaderboard
+        const playerName = playerNameInput.value.trim() || "Anonim";
+        const entry = {
+          name: playerName,
+          score: score,
+          topic: currentTopic,
+          difficulty: currentDifficulty,
+          date: new Date().toISOString()
+        };
+        leaderboardData.push(entry);
+        saveLeaderboard();
+        renderLeaderboard();
 
-    scoreText.textContent = `Skor Anda: ${score} dari ${questions.length} (${Math.round(score / questions.length * 100)}%)`;
+        restartBtn.focus();
+      }
 
-    // Simpan ke leaderboard
-    const playerName = playerNameInput.value.trim() || "Anonim";
-    const entry = {
-      name: playerName,
-      score: score,
-      topic: currentTopic,
-      difficulty: currentDifficulty,
-      date: new Date().toISOString()
-    };
-    leaderboardData.push(entry);
-    saveLeaderboard();
-    renderLeaderboard();
+      // Restart quiz (back to setup)
+      function restartQuiz() {
+        currentTopic = null;
+        currentDifficulty = null;
+        questions = [];
+        currentIndex = 0;
+        score = 0;
+        userAnswers = [];
+        shuffledOptions = [];
 
-    restartBtn.focus();
-  }
+        playerNameInput.value = '';
+        topicSelect.value = '';
+        difficultySelect.value = '';
+        startBtn.disabled = true;
 
-  // Restart quiz (back to setup)
-  function restartQuiz(){
-    currentTopic = null;
-    currentDifficulty = null;
-    questions = [];
-    currentIndex = 0;
-    score = 0;
-    userAnswers = [];
-    shuffledOptions = [];
+        resultSection.classList.remove('active');
+        setupSection.classList.add('active');
+        playerNameInput.focus();
+      }
 
-    playerNameInput.value = '';
-    topicSelect.value = '';
-    difficultySelect.value = '';
-    startBtn.disabled = true;
+      // Event listeners
+      startBtn.addEventListener('click', startQuiz);
+      nextBtn.addEventListener('click', onNextQuestion);
+      restartBtn.addEventListener('click', restartQuiz);
 
-    resultSection.classList.remove('active');
-    setupSection.classList.add('active');
-    playerNameInput.focus();
-  }
+      lbTopicFilter.addEventListener('change', renderLeaderboard);
+      lbDifficultyFilter.addEventListener('change', renderLeaderboard);
 
-  // Event listeners
-  startBtn.addEventListener('click', startQuiz);
-  nextBtn.addEventListener('click', onNextQuestion);
-  restartBtn.addEventListener('click', restartQuiz);
+      // Accessibility focus handling
+      //   playerNameInput.addEventListener('input', () => {
+      //     if(!startBtn.disabled) startBtn.focus();
+      //   });
 
-  lbTopicFilter.addEventListener('change', renderLeaderboard);
-  lbDifficultyFilter.addEventListener('change', renderLeaderboard);
+      // Initialize leaderboard on load
+      loadLeaderboard();
+      renderLeaderboard();
 
-  // Accessibility focus handling
-//   playerNameInput.addEventListener('input', () => {
-//     if(!startBtn.disabled) startBtn.focus();
-//   });
+      // Check start btn if user reload page with input
+      checkStartValidity();
 
-  // Initialize leaderboard on load
-  loadLeaderboard();
-  renderLeaderboard();
-
-  // Check start btn if user reload page with input
-  checkStartValidity();
-
-})();
-</script>
+    })();
+  </script>
 </body>
+
 </html>
